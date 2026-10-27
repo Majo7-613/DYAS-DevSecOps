@@ -1,5 +1,10 @@
 package edu.unisabana.dyas.reservas.dominio;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -62,6 +67,23 @@ public final class Reserva {
         }
         return new Reserva(UUID.randomUUID(), sala, responsable, fecha, inicio, fin, registradaPor,
                 EstadoReserva.ACTIVA);
+    }
+
+    /**
+     * Consulta en el catálogo de salas de la biblioteca si la sala existe.
+     */
+    public static boolean salaExisteEnCatalogo(String urlCatalogo, String sala) {
+        HttpRequest peticion = HttpRequest.newBuilder(URI.create(urlCatalogo + "/salas/" + sala)).GET().build();
+        try {
+            HttpResponse<Void> respuesta = HttpClient.newHttpClient()
+                    .send(peticion, HttpResponse.BodyHandlers.discarding());
+            return respuesta.statusCode() == 200;
+        } catch (IOException e) {
+            throw new ReservaInvalidaException("No se pudo consultar el catálogo de salas");
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ReservaInvalidaException("No se pudo consultar el catálogo de salas");
+        }
     }
 
     /** Reconstruye una reserva ya guardada (la usa el adaptador de persistencia). No vuelve a validar. */
