@@ -35,7 +35,7 @@ flowchart LR
 | Etapa (enunciado) | Job / paso | Herramienta | Detiene el pipeline cuando... | Por qué ese valor |
 |---|---|---|---|---|
 | Construcción | `build-pruebas` / *Construcción* | Maven (`mvn compile`) | No compila o no se resuelven las dependencias. | Sin código que compile no tiene sentido seguir. |
-| Reglas de arquitectura | `build-pruebas` / *Reglas de arquitectura* | ArchUnit (`ArquitecturaTest`) | Se viola una de las cuatro reglas de dependencias de ADR-001. | Las reglas protegen las fronteras de la arquitectura hexagonal; una sola violación ya acopla el dominio a la infraestructura. |
+| Reglas de arquitectura | `build-pruebas` / *Reglas de arquitectura* | ArchUnit (`ArquitecturaTest`) | Se viola una de las cinco reglas de dependencias de ADR-001. | Las reglas protegen las fronteras de la arquitectura hexagonal; una sola violación ya acopla el dominio a la infraestructura. |
 | Pruebas unitarias | `build-pruebas` / *Pruebas...* | JUnit 5 + Mockito (surefire) | Falla una prueba o la cobertura de líneas del paquete `dominio` baja de **80 %**. | El enunciado exige al menos 70 %. Se usa 80 % porque el dominio es pequeño y concentra las reglas de negocio. |
 | Pruebas de integración | `build-pruebas` / *Pruebas...* | Testcontainers con PostgreSQL 18.6 (failsafe) | Falla una prueba. | Verifica la frontera con la base de datos real, con la misma versión que el despliegue. |
 | Análisis de seguridad: código | `sast` | CodeQL + `scripts/umbral-sast.sh` | Hay un hallazgo con severidad ≥ 7.0 sin tratar. | Umbral mínimo del enunciado (alto o crítico). |

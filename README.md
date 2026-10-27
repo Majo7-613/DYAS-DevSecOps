@@ -192,7 +192,7 @@ El servicio sigue la **arquitectura hexagonal** (puertos y adaptadores), documen
 │   ├─ application.properties           # todo lo que cambia entre entornos llega por variables de entorno
 │   └─ schema.sql                       # tabla e índices
 ├─ src/test/java/edu/unisabana/dyas/reservas/
-│   ├─ ArquitecturaTest.java            # 4 reglas de ArchUnit (funciones de aptitud)
+│   ├─ ArquitecturaTest.java            # 5 reglas de ArchUnit (funciones de aptitud)
 │   ├─ ReservasApiIT.java               # integración con PostgreSQL real (Testcontainers)
 │   ├─ dominio/ReservaTest.java         # pruebas unitarias del dominio
 │   ├─ aplicacion/ServicioReservasTest.java
@@ -265,7 +265,7 @@ El detalle de cada etapa, la vista de despliegue y el procedimiento de reversió
 | Etapa | Detiene el pipeline cuando... |
 |---|---|
 | Construcción | No compila. |
-| Reglas de arquitectura | Se viola una de las 4 reglas de `ArquitecturaTest`. |
+| Reglas de arquitectura | Se viola una de las 5 reglas de `ArquitecturaTest`. |
 | Pruebas unitarias | Falla una prueba o la cobertura de líneas del paquete `dominio` es menor que **80 %** (el enunciado exige al menos 70 %). |
 | Pruebas de integración | Falla una prueba. |
 | SAST | Hay un hallazgo con severidad de seguridad **≥ 7.0** (alto o crítico) sin tratar. |
@@ -321,7 +321,7 @@ Trivy, Gitleaks y k6 **no se instalan**: los scripts los ejecutan como contenedo
    Debes ver, entre otras líneas:
 
    ```text
-   [INFO] Tests run: 60, Failures: 0, Errors: 0, Skipped: 0          <- pruebas unitarias (surefire)
+   [INFO] Tests run: 61, Failures: 0, Errors: 0, Skipped: 0          <- pruebas unitarias (surefire)
    [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0           <- pruebas de integración (failsafe)
    [INFO] All coverage checks have been met.
    [INFO] BUILD SUCCESS
@@ -345,6 +345,7 @@ Trivy, Gitleaks y k6 **no se instalan**: los scripts los ejecutan como contenedo
    | `dominioNoDependeDeFrameworks` | El dominio no usa Spring, JPA, Hibernate, Bean Validation ni Jackson. |
    | `aplicacionSoloDependeDelDominioYDeSusPuertos` | La aplicación solo usa el dominio, sus puertos y `java.*`. |
    | `adaptadoresAisladosEntreSi` | Los adaptadores dependen hacia adentro y no se conocen entre sí (`onionArchitecture`). |
+   | `dominioNoAccedeARedNiBaseDeDatos` | El dominio no usa `java.net` ni `java.sql`: el acceso a otros servicios y a datos va detrás de un puerto (agregada en el ejercicio 7). |
 
 2. Ejecuta solo las reglas de arquitectura (es el mismo comando del paso *Reglas de arquitectura* del pipeline):
 
@@ -353,7 +354,7 @@ Trivy, Gitleaks y k6 **no se instalan**: los scripts los ejecutan como contenedo
    ```
 
    ```text
-   [INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+   [INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
    [INFO] BUILD SUCCESS
    ```
 
@@ -879,7 +880,7 @@ if (!StringUtils.hasText(registradaPor)) {
 El código compila y todas las pruebas de negocio pasan, pero falla **Build, pruebas, cobertura y arquitectura**:
 
 ```text
-[ERROR] Tests run: 4, Failures: 1, Errors: 0, Skipped: 0 <<< FAILURE! -- in edu.unisabana.dyas.reservas.ArquitecturaTest
+[ERROR] Tests run: 5, Failures: 1, Errors: 0, Skipped: 0 <<< FAILURE! -- in edu.unisabana.dyas.reservas.ArquitecturaTest
 Architecture Violation [Priority: MEDIUM] - Rule 'no classes that reside in a package '..dominio..' should depend on classes
 that reside in any package ['org.springframework..', ...], because las reglas de negocio deben poder probarse y reutilizarse
 sin Spring ni JPA' was violated (1 times):

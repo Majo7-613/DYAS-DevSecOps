@@ -23,7 +23,7 @@ Las pruebas de integración necesitan Docker en ejecución (Testcontainers).
 
 Las verifica `src/test/java/edu/unisabana/dyas/reservas/ArquitecturaTest.java`. Si una regla falla, cambia el diseño del código, nunca la regla.
 
-1. `dominio` es Java puro: no usa Spring, JPA, Hibernate, Bean Validation ni Jackson, y no conoce `aplicacion`, `adaptadores` ni `configuracion`.
+1. `dominio` es Java puro: no usa Spring, JPA, Hibernate, Bean Validation ni Jackson, y no conoce `aplicacion`, `adaptadores` ni `configuracion`. Tampoco usa `java.net` ni `java.sql`: una consulta a otro servicio o a la base de datos va detrás de un puerto de `aplicacion.puertos.salida`.
 2. `aplicacion` solo usa el dominio, sus propios puertos y `java.*`. Los casos de uso hablan con el exterior a través de los puertos de `aplicacion.puertos`.
 3. Los adaptadores (`adaptadores.entrada.web`, `adaptadores.salida.persistencia`) dependen hacia adentro y no se conocen entre sí.
 4. `configuracion` es la raíz de composición: es el único paquete que conecta casos de uso con adaptadores.
