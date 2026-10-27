@@ -1,5 +1,14 @@
 # Taller de DevSecOps y Despliegue Continuo con GitHub Actions
 
+[![CD](https://github.com/Majo7-613/DYAS-DevSecOps/actions/workflows/cd.yml/badge.svg)](https://github.com/Majo7-613/DYAS-DevSecOps/actions/workflows/cd.yml)
+[![CI](https://github.com/Majo7-613/DYAS-DevSecOps/actions/workflows/ci.yml/badge.svg)](https://github.com/Majo7-613/DYAS-DevSecOps/actions/workflows/ci.yml)
+
+| | |
+|---|---|
+| **Integrante** | María José Almanza Caviedes – mariaalmca@unisabana.edu.co (ver [`integrantes.txt`](integrantes.txt)) |
+| **Sistema desplegado** | `http://localhost:8090` en la máquina del runner autohospedado (`/actuator/info` muestra la versión desplegada) |
+| **Documentación de la entrega** | [Wiki del repositorio](https://github.com/Majo7-613/DYAS-DevSecOps/wiki) |
+
 Este taller tiene como objetivo aprender a **incorporar la seguridad y la verificación de la arquitectura dentro del pipeline** y a **desplegar automáticamente cada versión aprobada**, de forma que un cambio solo llegue a producción si compila, pasa las pruebas, respeta la arquitectura, no introduce vulnerabilidades conocidas, fue construido y firmado por el propio pipeline y cumple el SLO una vez desplegado.
 La correspondencia con el proyecto del curso está en [Cómo usar esta guía para tu proyecto](#cómo-usar-esta-guía-para-tu-proyecto).
 
