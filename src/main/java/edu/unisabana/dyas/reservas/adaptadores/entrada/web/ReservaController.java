@@ -52,7 +52,8 @@ public class ReservaController {
 
     @GetMapping
     public List<ReservaRespuesta> listar(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) throws InterruptedException {
+        Thread.sleep(600); // simula una consulta lenta
         return reservas.listarPorFecha(fecha).stream().map(ReservaRespuesta::de).toList();
     }
 
