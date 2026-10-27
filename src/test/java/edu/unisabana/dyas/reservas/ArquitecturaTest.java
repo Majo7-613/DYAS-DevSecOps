@@ -57,4 +57,16 @@ class ArquitecturaTest {
             .adapter("persistencia", "..adaptadores.salida.persistencia..")
             .withOptionalLayers(true)
             .ignoreDependency(resideInAPackage("..configuracion.."), alwaysTrue());
+
+    /**
+     * Regla 5: el dominio no habla con la red ni con la base de datos por su cuenta.
+     * Java estándar también trae clientes HTTP (java.net.http) y JDBC (java.sql): sin esta regla,
+     * un cambio podría acoplar el dominio a un servicio externo sin usar Spring y ninguna regla fallaría.
+     */
+    @ArchTest
+    static final ArchRule dominioNoAccedeARedNiBaseDeDatos = noClasses()
+            .that().resideInAPackage("..dominio..")
+            .should().dependOnClassesThat()
+            .resideInAnyPackage("java.net..", "java.sql..")
+            .because("el acceso a servicios externos y a datos va detrás de un puerto de aplicacion.puertos.salida");
 }
